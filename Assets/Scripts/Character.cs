@@ -49,13 +49,13 @@ public class Character : MonoBehaviour
             Quaternion zQ = new Quaternion();
             if (inputDirection.z != 0)
             {
-                zQ = Quaternion.Euler(0, inputDirection.z == 1 ? 180 : 0, 0);
+                zQ = Quaternion.Euler(0, inputDirection.z == 1 ? 0 : 180, 0);
                 influence += 0.5f; 
             }
             Quaternion xQ = new Quaternion();
             if (inputDirection.x != 0)
             {
-                xQ = Quaternion.Euler(0, inputDirection.x == 1 ? -90 : 90, 0);
+                xQ = Quaternion.Euler(0, inputDirection.x == 1 ? 90 : -90, 0);
                 influence -= 0.5f;
 
             }

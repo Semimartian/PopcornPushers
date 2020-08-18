@@ -6,7 +6,14 @@ public class World : MonoBehaviour
 {
     [SerializeField] private float minShadowHeight;
     [SerializeField] private float maxShadowHeight;
+    private static float floorHeight;
+    [SerializeField] private Collider floorCollider;
 
+
+    public static float FloorHeight
+    {
+        get { return floorHeight; }
+    }
     public static float MinShadowHeight
     {
         get { return instance.minShadowHeight; }
@@ -22,7 +29,11 @@ public class World : MonoBehaviour
     {
         instance = this;
     }
+    private void Start()
+    {
+        floorHeight = floorCollider.bounds.max.y;
 
+    }
     // Update is called once per frame
     void Update()
     {
