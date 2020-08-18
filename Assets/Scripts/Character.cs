@@ -10,9 +10,10 @@ public class Character : MonoBehaviour
     [SerializeField] private KeyCode leftKey;
 
     [SerializeField] private float walkingSpeed;
-    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float graphicsRotationSpeed;
 
     [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private Transform graphicsTransform;
 
 
     void Start()
@@ -60,9 +61,12 @@ public class Character : MonoBehaviour
 
             }
             Quaternion rotation = Quaternion.Lerp(xQ, zQ, influence);
+            // inputDirection
+            Vector3 movementVector = Vector3.ClampMagnitude(inputDirection, walkingSpeed * Time.deltaTime);
+            transform.position += movementVector;
             transform.rotation = Quaternion.RotateTowards
-                (transform.rotation, rotation, rotationSpeed* Time.deltaTime);
-            transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
+                (transform.rotation, rotation, graphicsRotationSpeed * Time.deltaTime);
+          //  transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
         }
     }
 }
