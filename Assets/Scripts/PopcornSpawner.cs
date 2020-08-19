@@ -9,6 +9,8 @@ public class PopcornSpawner : MonoBehaviour
     private Bounds range;
     [SerializeField] private Kernel kernelPreFab;
     private static List<Kernel> kernelPool;
+    [SerializeField] private Mesh[] kernelMeshes;
+
 
     void Start()
     {
@@ -18,11 +20,14 @@ public class PopcornSpawner : MonoBehaviour
         for (int i = 0; i < kernelsToSpawn; i++)
         {
             Kernel kernel = Instantiate(kernelPreFab);
+            kernel.meshFilter.mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
             kernel.gameObject.SetActive(false);
             kernelPool.Add(kernel);
         }
 
     }
+
+
 
     private float nextSpawn;
    [SerializeField]  private float maxSpawnInterval;

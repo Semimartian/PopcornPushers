@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,15 +16,32 @@ public class Character : MonoBehaviour
     [SerializeField] private Rigidbody rigidbody;
     [SerializeField] private Transform graphicsTransform;
 
+    [SerializeField] private Animator animator;
+
+    [SerializeField] private Color colour;
+
+    [SerializeField] private Bucket bucket;
+
+    [SerializeField] private TMPro.TextMeshProUGUI text;
+    [SerializeField] private Transform textAnchor;
+
+
 
     void Start()
     {
-        
+        Initialise();
+    }
+    private void Initialise()
+    {
+        text.color = colour;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateText();
+        bool walking = false;
         Vector3 inputDirection = Vector3.zero;
         if (Input.GetKey(upKey))
         {
@@ -45,6 +63,7 @@ public class Character : MonoBehaviour
 
         if(inputDirection!= Vector3.zero)
         {
+            walking = true;
             float influence = 0.5f;
 
             Quaternion zQ = new Quaternion();
@@ -68,5 +87,12 @@ public class Character : MonoBehaviour
                 (transform.rotation, rotation, graphicsRotationSpeed * Time.deltaTime);
           //  transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
         }
+
+        animator.SetBool("Walking", walking);
+    }
+    private void UpdateText()
+    {
+        text.transform.position = Camera.main.WorldToScreenPoint(textAnchor.position);
+        text.text = bucket.Kernels.ToString();
     }
 }

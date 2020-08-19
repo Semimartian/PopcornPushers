@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Bucket : MonoBehaviour
 {
-    [SerializeField] private Character character;
     private int kernels = 0;
+    public int Kernels
+    {
+        get { return kernels; }
+    }
 
     private void Start()
     {

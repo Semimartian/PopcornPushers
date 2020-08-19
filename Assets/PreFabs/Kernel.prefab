@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4168439286312944711}
-  m_Mesh: {fileID: 8155946519446003867, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
+  m_Mesh: {fileID: -7797415580880674795, guid: 9394ede782507d9449db969c49186e80, type: 3}
 --- !u!23 &6351997019178015033
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -158,9 +158,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphics: {fileID: 2621245048860292490}
   fallSpeed: 5
-  collider: {fileID: 9147381499943254750}
   bounceForce: 8
   gravity: 6
+  meshFilter: {fileID: 3741710790873640279}
 --- !u!65 &9147381499943254750
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -7,11 +7,13 @@ public class Kernel : MonoBehaviour
     [SerializeField] private Transform graphics;
     private Vector3 rotation;
     [SerializeField] private float fallSpeed;
-    [SerializeField] Collider collider;
     private  bool falling;
     private float yVelocity;
     [SerializeField] private float bounceForce;
     [SerializeField] private float gravity;
+
+   public MeshFilter meshFilter;
+
 
     // Update is called once per frame
 
