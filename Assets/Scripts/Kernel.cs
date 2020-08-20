@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum KernelTypes
+{
+    Good,Bad
+}
+
 public class Kernel : MonoBehaviour
 {
     [SerializeField] private Transform graphics;
@@ -12,17 +17,11 @@ public class Kernel : MonoBehaviour
     [SerializeField] private float bounceForce;
     [SerializeField] private float gravity;
 
-   public MeshFilter meshFilter;
+    [SerializeField] private MeshFilter meshFilter;
 
-
+    public KernelTypes kernelType;
     // Update is called once per frame
 
-    private void Start()
-    {
-        float r = 160f;
-        rotation = new Vector3
-            (Random.Range(-r, r), Random.Range(-r, r), Random.Range(-r, r));
-    }
     void FixedUpdate()
     {
         graphics.Rotate(rotation * Time.deltaTime);
@@ -53,10 +52,15 @@ public class Kernel : MonoBehaviour
         }
 
     }
-    public void SpawnInitialise()
+    public void SpawnInitialise(KernelTypes type, Mesh mesh )
     {
+        float r = 160f;
+        rotation = new Vector3
+            (Random.Range(-r, r), Random.Range(-r, r), Random.Range(-r, r));
         transform.localScale = Vector3.zero;
         falling = true;
+        kernelType = type;
+        meshFilter.mesh = mesh;
     }
     private void Die()
     {

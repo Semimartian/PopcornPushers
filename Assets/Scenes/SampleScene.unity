@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 6581f1279b865504aa2e773768aca948, type: 2}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,8 +37,8 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.9436455, g: 0.8434663, b: 0.39400905, a: 1}
+  m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -624,11 +624,13 @@ MonoBehaviour:
   rangeCollider: {fileID: 1161264416}
   kernelPreFab: {fileID: -1253959410119535524, guid: a8d97fd15cd20c84ab46309f103b22cb,
     type: 3}
-  kernelMeshes:
-  - {fileID: 8155946519446003867, guid: 0b458d2db893265409ed3cc68cd29168, type: 3}
-  - {fileID: 4982286811626009481, guid: 0b458d2db893265409ed3cc68cd29168, type: 3}
-  - {fileID: -7797415580880674795, guid: 0b458d2db893265409ed3cc68cd29168, type: 3}
-  - {fileID: -5327908422840794669, guid: 0b458d2db893265409ed3cc68cd29168, type: 3}
+  goodKernelMeshes:
+  - {fileID: 8155946519446003867, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
+  - {fileID: 4982286811626009481, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
+  - {fileID: -7797415580880674795, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
+  - {fileID: -5327908422840794669, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
+  badKernelMeshes:
+  - {fileID: -5495902117074765545, guid: 8b3aad4fefe5d7a4e88d3d803bee3028, type: 3}
   maxSpawnInterval: 3
 --- !u!4 &1046010383
 Transform:

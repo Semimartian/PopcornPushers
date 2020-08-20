@@ -90,6 +90,7 @@ public class Character : MonoBehaviour
 
         animator.SetBool("Walking", walking);
     }
+
     private void UpdateText()
     {
         text.transform.position = Camera.main.WorldToScreenPoint(textAnchor.position);

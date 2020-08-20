@@ -21,8 +21,18 @@ public class Bucket : MonoBehaviour
     }
     private void Collect(Kernel kernel)
     {
+
         kernel.Collect();
-        kernels += 1;
+        if(kernel.kernelType == KernelTypes.Good)
+        {
+            kernels += 1;
+
+        }
+        else
+        {
+            kernels -= 1;
+
+        }
         Debug.Log("kernels:" + kernels);
     }
 

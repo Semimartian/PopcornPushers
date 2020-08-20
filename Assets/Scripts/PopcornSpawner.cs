@@ -9,7 +9,8 @@ public class PopcornSpawner : MonoBehaviour
     private Bounds range;
     [SerializeField] private Kernel kernelPreFab;
     private static List<Kernel> kernelPool;
-    [SerializeField] private Mesh[] kernelMeshes;
+    [SerializeField] private Mesh[] goodKernelMeshes;
+    [SerializeField] private Mesh[] badKernelMeshes;
 
 
     void Start()
@@ -20,7 +21,6 @@ public class PopcornSpawner : MonoBehaviour
         for (int i = 0; i < kernelsToSpawn; i++)
         {
             Kernel kernel = Instantiate(kernelPreFab);
-            kernel.meshFilter.mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
             kernel.gameObject.SetActive(false);
             kernelPool.Add(kernel);
         }
@@ -52,7 +52,13 @@ public class PopcornSpawner : MonoBehaviour
         kernelPool.RemoveAt(0);
         kernel.gameObject.SetActive(true);
         kernel.transform.position = spawnPosition;
-        kernel.SpawnInitialise();
+
+        bool isBad = Random.Range(0, 100)>90;
+        KernelTypes kernelType = isBad ? KernelTypes.Bad : KernelTypes.Good;
+        Mesh mesh = kernelType == KernelTypes.Bad ?
+            badKernelMeshes[Random.Range(0, badKernelMeshes.Length)] : goodKernelMeshes[Random.Range(0, goodKernelMeshes.Length)];
+
+        kernel.SpawnInitialise(kernelType, mesh);
     }
 
     public static void recycleKernel(Kernel kernel)
