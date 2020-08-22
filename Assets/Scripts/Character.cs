@@ -14,6 +14,8 @@ public class Character : MonoBehaviour
     [SerializeField] private float graphicsRotationSpeed;
 
     [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private Collider collider;
+
     [SerializeField] private Transform graphicsTransform;
 
     [SerializeField] private Animator animator;
@@ -37,8 +39,7 @@ public class Character : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         UpdateText();
         bool walking = false;
@@ -80,12 +81,30 @@ public class Character : MonoBehaviour
 
             }
             Quaternion rotation = Quaternion.Lerp(xQ, zQ, influence);
-            // inputDirection
-            Vector3 movementVector = Vector3.ClampMagnitude(inputDirection, walkingSpeed * Time.deltaTime);
-            transform.position += movementVector;
             transform.rotation = Quaternion.RotateTowards
                 (transform.rotation, rotation, graphicsRotationSpeed * Time.deltaTime);
-          //  transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
+
+            Vector3 movementVector = Vector3.ClampMagnitude(inputDirection, walkingSpeed * Time.deltaTime);
+
+           /* RaycastHit collisionDetector ;
+           // Debug.Log("transform.forward" + transform.forward);
+           if(Physics.Raycast(transform.position, transform.forward,out collisionDetector, 3f))
+           {
+                Debug.Log("hit");
+                movementVector = Vector3.ClampMagnitude
+                    (movementVector, Vector3.Magnitude
+                    (new Vector3(transform.position.x, transform.position.y, collider.bounds.max.z) - collisionDetector.point));
+                movementVector = Vector3.zero;
+
+           }
+            Debug.DrawRay(transform.position, transform.forward, Color.red, 0.2f);*/
+            // inputDirection
+
+           // rigidbody.MovePosition(transform.position + movementVector);
+           transform.position += movementVector;
+
+            
+           // transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
         }
 
         animator.SetBool("Walking", walking);

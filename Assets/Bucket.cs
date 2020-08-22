@@ -5,6 +5,8 @@ using UnityEngine;
 public class Bucket : MonoBehaviour
 {
     private int kernels = 0;
+    [SerializeField] private Transform[] kernelSlots;
+
     public int Kernels
     {
         get { return kernels; }
@@ -23,6 +25,17 @@ public class Bucket : MonoBehaviour
     {
 
         kernel.Collect();
+        for (int i = 0; i < kernelSlots.Length; i++)
+        {
+            if(kernelSlots[i].childCount == 0)
+            {
+                kernel.transform.parent = kernelSlots[i];
+                kernel.transform.localPosition = Vector3.zero;
+                break;
+
+            }
+        }
+
         if(kernel.kernelType == KernelTypes.Good)
         {
             kernels += 1;
@@ -39,7 +52,7 @@ public class Bucket : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Kernel kernel = other.GetComponent<Kernel>();
-        if(kernel!=null)
+        if(kernel!=null && kernel.IsCollectable)
         {
             Collect(kernel);
         }
