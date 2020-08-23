@@ -2,46 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum KernelTypes:byte
+public class Bomb : MonoBehaviour
 {
-    Good,Bad
-}
-
-public enum KernelStates : byte
-{
-    Falling, Bouncing, Collected
-}
-
-public class Kernel : MonoBehaviour
-{
-
-
     private KernelStates state;
-
-    //public KernelTypes kernelType;
-
 
     [SerializeField] private Transform graphics;
     private Vector3 rotation;
     [SerializeField] private float fallSpeed;
-    //private  bool falling;
     private float yVelocity;
     [SerializeField] private float bounceForce;
     [SerializeField] private float gravity;
 
-    [SerializeField] private MeshFilter meshFilter;
+   /* public bool IsCollectable
+    { get { return state != KernelStates.Collected; } }*/
 
-    public bool IsCollectable
-    { get { return state != KernelStates.Collected; } }
-
-    // Update is called once per frame
 
     void FixedUpdate()
     {
-        if(state!= KernelStates.Collected)
+        if (state != KernelStates.Collected)
         {
             graphics.Rotate(rotation * Time.deltaTime);
-            //Debug.Log(" Collider:" + collider.bounds.min.y);
             if (state == KernelStates.Falling)
             {
                 float t =
@@ -66,22 +46,21 @@ public class Kernel : MonoBehaviour
                 }
             }
         }
-       
 
     }
-    public void SpawnInitialise( Mesh mesh )
+
+    public void SpawnInitialise()
     {
         float r = 160f;
         rotation = new Vector3
             (Random.Range(-r, r), Random.Range(-r, r), Random.Range(-r, r));
         transform.localScale = Vector3.zero;
         state = KernelStates.Falling;
-        //kernelType = type;
-        meshFilter.mesh = mesh;
     }
-    public void Die()
+
+    private void Die()
     {
-        PopcornSpawner.recycleKernel(this);
+        PopcornSpawner.recycleBomb(this);
     }
 
     private void Bounce()
@@ -92,7 +71,6 @@ public class Kernel : MonoBehaviour
 
     public void Collect()
     {
-        state = KernelStates.Collected;
-        //Die();
+        Die();
     }
 }

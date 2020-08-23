@@ -10,13 +10,17 @@ public class PopcornSpawner : MonoBehaviour
     [SerializeField] private Kernel kernelPreFab;
     private static List<Kernel> kernelPool;
     [SerializeField] private Mesh[] goodKernelMeshes;
-    [SerializeField] private Mesh[] badKernelMeshes;
-    
+
+    [SerializeField] private Bomb bombPreFab;
+    private static List<Bomb> bombPool;
+    //[SerializeField] private Mesh[] badKernelMeshes;
+
 
     void Start()
     {
         maxSpawnInterval = initialMaxSpawnInterval;
         range = rangeCollider.bounds;
+
         int kernelsToSpawn = 56;
         kernelPool = new List<Kernel>(kernelsToSpawn);
         for (int i = 0; i < kernelsToSpawn; i++)
@@ -26,8 +30,16 @@ public class PopcornSpawner : MonoBehaviour
             kernelPool.Add(kernel);
         }
 
-    }
+        int bombsToSpawn = 12;
+        bombPool = new List<Bomb>(bombsToSpawn);
+        for (int i = 0; i < bombsToSpawn; i++)
+        {
+            Bomb bomb = Instantiate(bombPreFab);
+            bomb.gameObject.SetActive(false);
+            bombPool.Add(bomb);
+        }
 
+    }
 
     private float nextSpawn;
    [SerializeField]  private float initialMaxSpawnInterval;
@@ -62,22 +74,36 @@ public class PopcornSpawner : MonoBehaviour
         spawnPosition.x = Random.Range(range.min.x, range.max.x);
         spawnPosition.z = Random.Range(range.min.z, range.max.z);
 
-        Kernel kernel = kernelPool[0];
-        kernelPool.RemoveAt(0);
-        kernel.gameObject.SetActive(true);
-        kernel.transform.position = spawnPosition;
+        bool spawnBomb = Random.Range(0, 100) > 90;
+        //TODO: repeatin code
+        if (spawnBomb)
+        {
+            Bomb bomb = bombPool[0];
+            bombPool.RemoveAt(0);
+            bomb.gameObject.SetActive(true);
+            bomb.transform.position = spawnPosition;
+            bomb.SpawnInitialise();
+        }
+        else
+        {
+            Kernel kernel = kernelPool[0];
+            kernelPool.RemoveAt(0);
+            kernel.gameObject.SetActive(true);
+            kernel.transform.position = spawnPosition;
+            Mesh mesh = goodKernelMeshes[Random.Range(0, goodKernelMeshes.Length)];
+            kernel.SpawnInitialise(mesh);
 
-        bool isBad = Random.Range(0, 100)>90;
-        KernelTypes kernelType = isBad ? KernelTypes.Bad : KernelTypes.Good;
-        Mesh mesh = kernelType == KernelTypes.Bad ?
-            badKernelMeshes[Random.Range(0, badKernelMeshes.Length)] : goodKernelMeshes[Random.Range(0, goodKernelMeshes.Length)];
-
-        kernel.SpawnInitialise(kernelType, mesh);
+        }
     }
 
     public static void recycleKernel(Kernel kernel)
     {
         kernel.gameObject.SetActive(false);
         kernelPool.Add(kernel);
+    }
+    public static void recycleBomb(Bomb bomb)
+    {
+        bomb.gameObject.SetActive(false);
+        bombPool.Add(bomb);
     }
 }

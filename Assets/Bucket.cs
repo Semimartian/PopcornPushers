@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ public class Bucket : MonoBehaviour
     {
         kernels = 0;
     }
-    private void Collect(Kernel kernel)
+    private void CollectKernel(Kernel kernel)
     {
 
         kernel.Collect();
@@ -36,18 +37,37 @@ public class Bucket : MonoBehaviour
             }
         }
 
-        if(kernel.kernelType == KernelTypes.Good)
+      //  if(kernel.kernelType == KernelTypes.Good)
         {
             kernels += 1;
 
         }
-        else
+       /* else
         {
             kernels -= 1;
-
-        }
+        }*/
         LiveLeaderboard.instance.ScoreChanged();
         Debug.Log("kernels:" + kernels);
+    }
+
+    private void CollectBomb(Bomb bomb)
+    {
+        bomb.Collect();
+        for (int i = kernelSlots.Length-1; i >= 0; i--)
+        {
+            if (kernelSlots[i].childCount != 0)
+            {
+                Kernel kernelAtSlot = kernelSlots[i].GetChild(0).GetComponent<Kernel>();
+                kernelSlots[i].DetachChildren();
+                kernelAtSlot.Die();
+                break;
+            }
+        }
+        Debug.Log("BOOM!!!");
+
+        kernels -= 1;
+        LiveLeaderboard.instance.ScoreChanged();
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,7 +75,18 @@ public class Bucket : MonoBehaviour
         Kernel kernel = other.GetComponent<Kernel>();
         if(kernel!=null && kernel.IsCollectable)
         {
-            Collect(kernel);
+            CollectKernel(kernel);
         }
+        else
+        {
+            Bomb bomb = other.GetComponent<Bomb>();
+            if (bomb != null)
+            {
+                CollectBomb(bomb);
+            }
+        }
+
     }
+
+
 }
