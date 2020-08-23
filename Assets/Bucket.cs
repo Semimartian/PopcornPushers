@@ -46,6 +46,7 @@ public class Bucket : MonoBehaviour
             kernels -= 1;
 
         }
+        LiveLeaderboard.instance.ScoreChanged();
         Debug.Log("kernels:" + kernels);
     }
 

@@ -21,11 +21,16 @@ public class Character : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [SerializeField] private Color colour;
+    public Color Colour { get { return colour; } }
 
     [SerializeField] private Bucket bucket;
+    public Bucket Bucket
+    {
+        get { return bucket; }
+    }
 
-    [SerializeField] private TMPro.TextMeshProUGUI text;
-    [SerializeField] private Transform textAnchor;
+    /*[SerializeField] private TMPro.TextMeshProUGUI text;
+    [SerializeField] private Transform textAnchor;*/
 
 
 
@@ -35,13 +40,13 @@ public class Character : MonoBehaviour
     }
     private void Initialise()
     {
-        text.color = colour;
+        
 
     }
 
     void FixedUpdate()
     {
-        UpdateText();
+       // UpdateText();
         bool walking = false;
         Vector3 inputDirection = Vector3.zero;
         if (Input.GetKey(upKey))
@@ -110,9 +115,5 @@ public class Character : MonoBehaviour
         animator.SetBool("Walking", walking);
     }
 
-    private void UpdateText()
-    {
-        text.transform.position = Camera.main.WorldToScreenPoint(textAnchor.position);
-        text.text = bucket.Kernels.ToString();
-    }
+
 }

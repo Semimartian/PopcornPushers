@@ -11,12 +11,13 @@ public class PopcornSpawner : MonoBehaviour
     private static List<Kernel> kernelPool;
     [SerializeField] private Mesh[] goodKernelMeshes;
     [SerializeField] private Mesh[] badKernelMeshes;
-
+    
 
     void Start()
     {
+        maxSpawnInterval = initialMaxSpawnInterval;
         range = rangeCollider.bounds;
-        int kernelsToSpawn = 32;
+        int kernelsToSpawn = 56;
         kernelPool = new List<Kernel>(kernelsToSpawn);
         for (int i = 0; i < kernelsToSpawn; i++)
         {
@@ -28,9 +29,13 @@ public class PopcornSpawner : MonoBehaviour
     }
 
 
-
     private float nextSpawn;
-   [SerializeField]  private float maxSpawnInterval;
+   [SerializeField]  private float initialMaxSpawnInterval;
+    public float maxSpawnInterval;
+
+    [SerializeField] private float minMaxSpawnInteval;
+    [SerializeField] private float maxSpawnreductionPerSecond;
+
 
     void Update()
     {
@@ -38,6 +43,15 @@ public class PopcornSpawner : MonoBehaviour
         {
             SpawnKernel();
             nextSpawn += Random.Range(0, maxSpawnInterval);
+        }
+        if (maxSpawnInterval > minMaxSpawnInteval)
+        {
+            maxSpawnInterval -= maxSpawnreductionPerSecond * Time.deltaTime;
+
+        }
+        else
+        {
+            maxSpawnInterval = minMaxSpawnInteval;
         }
     }
 
