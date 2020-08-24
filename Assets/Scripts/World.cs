@@ -10,9 +10,14 @@ public class World : MonoBehaviour
     [SerializeField] private Collider floorCollider;
 
 
-    public static float FloorHeight
+   /* public static float FloorHeight
     {
         get { return floorHeight; }
+    }*/
+
+    public static float CorrectedFloorHeight
+    {
+        get { return floorHeight +0.4f; }
     }
     public static float MinShadowHeight
     {

@@ -49,7 +49,7 @@ public class Kernel : MonoBehaviour
                 transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
 
                 transform.Translate(new Vector3(0, -fallSpeed * Time.deltaTime, 0));
-                if (transform.position.y <= World.FloorHeight)
+                if (transform.position.y <= World.CorrectedFloorHeight)
                 {
                     //Debug.Log("bounce- Collider:" + collider.bounds.min.y +"floor:"+ World.FloorHeight);
                     Bounce();

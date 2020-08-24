@@ -307,6 +307,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1092792208}
     m_Modifications:
+    - target: {fileID: 278802828446030823, guid: 82d26f2563b6afa42a4b6ad746bf543d,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4521637255627176936, guid: 82d26f2563b6afa42a4b6ad746bf543d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -480,7 +485,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &317913076
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -957,7 +962,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1154,7 +1159,7 @@ GameObject:
   - component: {fileID: 1045752368}
   - component: {fileID: 1045752367}
   m_Layer: 5
-  m_Name: Image
+  m_Name: ForGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1253,6 +1258,8 @@ MonoBehaviour:
   - {fileID: -7797415580880674795, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
   - {fileID: -5327908422840794669, guid: 31cf69cc08345a24bac43e3e41452a4c, type: 3}
   bombPreFab: {fileID: 5171790806589950850, guid: 1356c39c8559be34ebc3db4c0997f988,
+    type: 3}
+  explosionPreFab: {fileID: 3274081279903703379, guid: 67a684e320da6e7439421a07e3fa265c,
     type: 3}
   initialMaxSpawnInterval: 2.6
   maxSpawnInterval: 0
@@ -1390,7 +1397,7 @@ MonoBehaviour:
   - {fileID: 1385304314}
   - {fileID: 293058209}
   - {fileID: 360579935}
-  scoreUISpeed: 180
+  scoreUISpeed: 200
   scoreUIsParent: {fileID: 1092792208}
 --- !u!1 &1161264415
 GameObject:
@@ -1729,7 +1736,7 @@ BoxCollider:
   m_GameObject: {fileID: 1441041232}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2253,12 +2260,12 @@ PrefabInstance:
     - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: colour.r
-      value: 0
+      value: 0.36320752
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: colour.g
-      value: 0.18304133
+      value: 0.57846147
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
@@ -2749,12 +2756,12 @@ PrefabInstance:
     - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: colour.r
-      value: 0.8642616
+      value: 0.8983538
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: colour.g
-      value: 0
+      value: 0.25943398
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
@@ -3320,7 +3327,7 @@ Transform:
   - {fileID: 1634970743}
   - {fileID: 1371914952}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5805077133666631189
 Transform:
@@ -3686,7 +3693,7 @@ PrefabInstance:
     - target: {fileID: 8821668999917534265, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534265, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}

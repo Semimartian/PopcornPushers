@@ -13,6 +13,9 @@ public class PopcornSpawner : MonoBehaviour
 
     [SerializeField] private Bomb bombPreFab;
     private static List<Bomb> bombPool;
+
+    [SerializeField] private Explosion explosionPreFab;
+    private static List<Explosion> explosionPool;
     //[SerializeField] private Mesh[] badKernelMeshes;
 
 
@@ -30,13 +33,18 @@ public class PopcornSpawner : MonoBehaviour
             kernelPool.Add(kernel);
         }
 
-        int bombsToSpawn = 12;
+        int bombsToSpawn = 8;
         bombPool = new List<Bomb>(bombsToSpawn);
+        explosionPool = new List<Explosion>(bombsToSpawn);
         for (int i = 0; i < bombsToSpawn; i++)
         {
             Bomb bomb = Instantiate(bombPreFab);
             bomb.gameObject.SetActive(false);
             bombPool.Add(bomb);
+
+            Explosion explosion = Instantiate(explosionPreFab);
+            explosion.gameObject.SetActive(false);
+            explosionPool.Add(explosion);
         }
 
     }
@@ -96,6 +104,17 @@ public class PopcornSpawner : MonoBehaviour
         }
     }
 
+    public static void SpawnExplosion(Vector3 spawnPosition)
+    {
+       
+        Explosion explosion = explosionPool[0];
+        explosionPool.RemoveAt(0);
+        explosion.gameObject.SetActive(true);
+        explosion.transform.position = spawnPosition;
+        explosion.SpawnInitialise();
+       
+    }
+
     public static void recycleKernel(Kernel kernel)
     {
         kernel.gameObject.SetActive(false);
@@ -105,5 +124,11 @@ public class PopcornSpawner : MonoBehaviour
     {
         bomb.gameObject.SetActive(false);
         bombPool.Add(bomb);
+    }
+
+    public static void recycleExplosion(Explosion explosion)
+    {
+        explosion.gameObject.SetActive(false);
+        explosionPool.Add(explosion);
     }
 }
