@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PopcornSpawner : MonoBehaviour
 {
+    [SerializeField] private bool  spawnPopcorn;
+
     // Start is called before the first frame update
     [SerializeField] private Collider rangeCollider;
     private Bounds range;
@@ -59,7 +61,7 @@ public class PopcornSpawner : MonoBehaviour
 
     void Update()
     {
-        if(Time.time >= nextSpawn)
+        if(Time.time >= nextSpawn && spawnPopcorn)
         {
             SpawnKernel();
             nextSpawn += Random.Range(0, maxSpawnInterval);

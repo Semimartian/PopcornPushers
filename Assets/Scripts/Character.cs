@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float walkingSpeed;
     [SerializeField] private float graphicsRotationSpeed;
 
-    [SerializeField] private Rigidbody rigidbody;
+    //[SerializeField] private Rigidbody rigidbody;
     [SerializeField] private Collider collider;
 
     [SerializeField] private Transform graphicsTransform;
@@ -24,10 +24,15 @@ public class Character : MonoBehaviour
     public Color Colour { get { return colour; } }
 
     [SerializeField] private Bucket bucket;
+
+    private Vector3 externalForces;
+    private float externalForcesReductionPerSecond=8f;
     public Bucket Bucket
     {
         get { return bucket; }
     }
+
+   public Transform crownAnchor;
 
     /*[SerializeField] private TMPro.TextMeshProUGUI text;
     [SerializeField] private Transform textAnchor;*/
@@ -46,7 +51,16 @@ public class Character : MonoBehaviour
 
     void FixedUpdate()
     {
-       // UpdateText();
+        if (externalForces.magnitude > 0)
+        {
+            transform.position += externalForces * Time.deltaTime;
+
+            externalForces = Vector3.ClampMagnitude
+                (externalForces, externalForces.magnitude - (externalForcesReductionPerSecond * Time.deltaTime));
+        }
+
+
+        // UpdateText();
         bool walking = false;
         Vector3 inputDirection = Vector3.zero;
         if (Input.GetKey(upKey))
@@ -108,6 +122,9 @@ public class Character : MonoBehaviour
            // rigidbody.MovePosition(transform.position + movementVector);
            transform.position += movementVector;
 
+            TryPush();
+
+            
             
            // transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
         }
@@ -116,4 +133,35 @@ public class Character : MonoBehaviour
     }
 
 
+    private void TryPush()
+    {
+        float height = collider.bounds.max.y- collider.bounds.min.y;
+        for (float i = 0; i < 1.1f; i+=0.25f)
+        {
+
+            RaycastHit collisionDetector;
+
+            // Debug.Log("transform.forward" + transform.forward);
+            if (Physics.Raycast(transform.position + Vector3.up*(height*i), transform.forward, out collisionDetector, 1.5f))
+            {
+                Character otherCharacter = (collisionDetector.collider.gameObject.GetComponent<Character>());
+                if (otherCharacter != null)
+                {
+                    //otherCharacter.rigidbody.AddExplosionForce(3f,transform.position,2f);
+                    Vector3 force = transform.forward * 10;
+                    force.y = 5;
+                    otherCharacter.externalForces = force;
+                    Debug.Log("hit");
+                    break;
+
+                }
+
+            }
+
+            Debug.DrawRay(transform.position, transform.forward, Color.red, 0.2f);
+        }
+
+       
+
+    }
 }

@@ -17,6 +17,7 @@ public class LiveLeaderboard : MonoBehaviour
     [SerializeField] private float scoreUISpeed = 0.5f;
     public static LiveLeaderboard instance;
     [SerializeField] private Transform scoreUIsParent;
+    [SerializeField] private UIFollower Crown;
 
 
     private void Start()
@@ -37,6 +38,30 @@ public class LiveLeaderboard : MonoBehaviour
         {
             scoreUIs[i].UpdateText();
             scoreUIs[i].transform.parent = scoreUIsParent;
+        }
+
+
+        int highestScore = 0;
+        Character winner = null;
+        Crown.gameObject.SetActive(false);
+        for (int i = 0; i < scoreUIs.Count - 1; i++)
+        {
+            if(scoreUIs[i].character.Bucket.Kernels > highestScore)
+            {
+                highestScore = scoreUIs[i].character.Bucket.Kernels;
+                winner = scoreUIs[i].character;
+            }
+            else if (scoreUIs[i].character.Bucket.Kernels == highestScore)
+            {
+                winner = null;
+            }
+        }
+
+        if(winner!= null)
+        {
+            Crown.gameObject.SetActive(true);
+            Crown.target = winner.crownAnchor;
+
         }
     }
 
