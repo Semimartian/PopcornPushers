@@ -18,6 +18,7 @@ public class LiveLeaderboard : MonoBehaviour
     public static LiveLeaderboard instance;
     [SerializeField] private Transform scoreUIsParent;
     [SerializeField] private UIFollower Crown;
+    [SerializeField] private int kernelsToWin;
 
 
     private void Start()
@@ -32,6 +33,10 @@ public class LiveLeaderboard : MonoBehaviour
 
     public void ScoreChanged()
     {
+        if (GameManager.gameState != GameManager.GameStates.InGame)
+        {
+            return;
+        }
         scoreUIs.Sort((b, a) => (a.character.Bucket.Kernels.CompareTo(b.character.Bucket.Kernels)));
         scoreUIsParent.DetachChildren();
         for (int i = scoreUIs.Count-1; i >=0 ; i--)
@@ -61,8 +66,13 @@ public class LiveLeaderboard : MonoBehaviour
         {
             Crown.gameObject.SetActive(true);
             Crown.target = winner.crownAnchor;
-
+            if(winner.Bucket.Kernels>= kernelsToWin)
+            {
+                GameManager.Win();
+            }
         }
+
+        
     }
 
 
