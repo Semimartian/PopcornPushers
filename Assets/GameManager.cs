@@ -8,6 +8,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     public static GameManager instance;
     public static GameStates gameState;
+    public bool perform;
+    public static bool Perform
+    {
+        get
+        { return instance.perform; }
+    }
+
     public enum GameStates
     {
         InGame,Podium

@@ -12,9 +12,18 @@ public class Bomb : MonoBehaviour
     private float yVelocity;
     [SerializeField] private float bounceForce;
     [SerializeField] private float gravity;
+    [SerializeField] private GameObject highQualityGraphics;
+    [SerializeField] private GameObject lowQualityGraphics;
+
     /* public bool IsCollectable
      { get { return state != KernelStates.Collected; } }*/
 
+    private void Start()
+    {
+        highQualityGraphics.SetActive(!GameManager.Perform);
+        lowQualityGraphics.SetActive(GameManager.Perform);
+
+    }
     void FixedUpdate()
     {
         if (state != KernelStates.Collected)

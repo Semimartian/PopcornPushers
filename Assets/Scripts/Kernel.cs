@@ -30,10 +30,19 @@ public class Kernel : MonoBehaviour
     [SerializeField] private float gravity;
 
     [SerializeField] private MeshFilter meshFilter;
+    [SerializeField] private GameObject highQualityGraphics;
+    [SerializeField] private GameObject lowQualityGraphics;
 
     public bool IsCollectable
     { get { return state != KernelStates.Collected; } }
 
+
+    private void Start()
+    {
+        highQualityGraphics.SetActive(!GameManager.Perform);
+        lowQualityGraphics.SetActive(GameManager.Perform);
+
+    }
     // Update is called once per frame
 
     void FixedUpdate()
