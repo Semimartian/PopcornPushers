@@ -28,13 +28,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Win();
+        }
     }
 
 
     [SerializeField] Animator[] transitioners;
 
-    public static void Win()
+    private static void Win()
     {
         gameState = GameStates.Podium;
 

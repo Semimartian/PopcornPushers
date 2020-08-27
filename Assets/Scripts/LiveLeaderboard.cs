@@ -68,7 +68,7 @@ public class LiveLeaderboard : MonoBehaviour
             Crown.target = winner.crownAnchor;
             if(winner.Bucket.Kernels>= kernelsToWin)
             {
-                GameManager.Win();
+               // GameManager.Win();
             }
         }
 
