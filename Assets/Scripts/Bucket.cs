@@ -7,6 +7,7 @@ public class Bucket : MonoBehaviour
 {
     private int kernels = 0;
     [SerializeField] private Transform[] kernelSlots;
+    [SerializeField] private Character character;
 
     public int Kernels
     {
@@ -52,6 +53,7 @@ public class Bucket : MonoBehaviour
 
     private void CollectBomb(Bomb bomb)
     {
+        character.Blink();
         bomb.Collect();
         for (int i = kernelSlots.Length-1; i >= 0; i--)
         {

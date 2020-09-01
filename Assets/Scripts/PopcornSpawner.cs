@@ -61,20 +61,24 @@ public class PopcornSpawner : MonoBehaviour
 
     void Update()
     {
-        if(Time.time >= nextSpawn && spawnPopcorn)
+        if(GameManager.GameState != GameManager.GameStates.Intro)
         {
-            SpawnKernel();
-            nextSpawn += Random.Range(0, maxSpawnInterval);
-        }
-        if (maxSpawnInterval > minMaxSpawnInteval)
-        {
-            maxSpawnInterval -= maxSpawnreductionPerSecond * Time.deltaTime;
+            if (Time.time >= nextSpawn && spawnPopcorn)
+            {
+                SpawnKernel();
+                nextSpawn = Time.time+ Random.Range(0, maxSpawnInterval);
+            }
+            if (maxSpawnInterval > minMaxSpawnInteval)
+            {
+                maxSpawnInterval -= maxSpawnreductionPerSecond * Time.deltaTime;
 
+            }
+            else
+            {
+                maxSpawnInterval = minMaxSpawnInteval;
+            }
         }
-        else
-        {
-            maxSpawnInterval = minMaxSpawnInteval;
-        }
+        
     }
 
     private void SpawnKernel()

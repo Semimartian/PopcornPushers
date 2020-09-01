@@ -16,11 +16,17 @@ public class Character : MonoBehaviour
     //[SerializeField] private Rigidbody rigidbody;
     [SerializeField] private Collider collider;
 
-    [SerializeField] private Transform graphicsTransform;
+    [SerializeField] private GameObject graphics;
 
     [SerializeField] private Animator animator;
 
     [SerializeField] private Color colour;
+    [SerializeField] private SkinnedMeshRenderer renderer;
+    public Material Material
+    {
+        get { return renderer.material; }
+    }
+
     public Color Colour { get { return colour; } }
 
     [SerializeField] private Bucket bucket;
@@ -32,7 +38,7 @@ public class Character : MonoBehaviour
         get { return bucket; }
     }
 
-   public Transform crownAnchor;
+   public Transform uiAnchor;
 
     /*[SerializeField] private TMPro.TextMeshProUGUI text;
     [SerializeField] private Transform textAnchor;*/
@@ -51,12 +57,18 @@ public class Character : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (externalForces.magnitude > 0)
+        float externalForcesMagnitude = externalForces.magnitude;
+        if (externalForcesMagnitude > 0)
         {
+            Debug.Log("externalForces");
             transform.position += externalForces * Time.deltaTime;
 
             externalForces = Vector3.ClampMagnitude
-                (externalForces, externalForces.magnitude - (externalForcesReductionPerSecond * Time.deltaTime));
+                (externalForces, externalForcesMagnitude - (externalForcesReductionPerSecond * Time.deltaTime));
+            if(externalForces.magnitude < 0.12f)
+            {
+                externalForces = Vector3.zero;
+            }
         }
 
 
@@ -120,22 +132,31 @@ public class Character : MonoBehaviour
             // inputDirection
 
            // rigidbody.MovePosition(transform.position + movementVector);
-           transform.position += movementVector;
+           if (!TryPush())
+            {
+                transform.position += movementVector;
 
-            TryPush();
+            }
 
-            
-            
-           // transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
+            //if (GameManager.AllowPushing)
+            {
+              
+
+            }
+
+
+
+            // transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
         }
 
         animator.SetBool("Walking", walking);
     }
 
 
-    private void TryPush()
+    private bool TryPush()
     {
         float height = collider.bounds.max.y- collider.bounds.min.y;
+        bool collided = false;
         for (float i = 0; i < 1.1f; i+=0.25f)
         {
 
@@ -145,23 +166,46 @@ public class Character : MonoBehaviour
             if (Physics.Raycast(transform.position + Vector3.up*(height*i), transform.forward, out collisionDetector, 1.5f))
             {
                 Character otherCharacter = (collisionDetector.collider.gameObject.GetComponent<Character>());
-                if (otherCharacter != null)
+                if (otherCharacter != null )
                 {
                     //otherCharacter.rigidbody.AddExplosionForce(3f,transform.position,2f);
-                    Vector3 force = transform.forward * 10;
-                    force.y = 5;
-                    otherCharacter.externalForces = force;
-                    Debug.Log("hit");
+                    if (otherCharacter.externalForces == Vector3.zero && GameManager.AllowPushing)
+                    {
+                        Vector3 force = transform.forward * 10;
+                        force.y = 5;
+                        otherCharacter.externalForces = force;
+                        Debug.Log("hit");
+                    }
+                    collided = true;
+
                     break;
 
                 }
 
             }
 
-            Debug.DrawRay(transform.position, transform.forward, Color.red, 0.2f);
+            //Debug.DrawRay(transform.position, transform.forward, Color.red, 0.2f);
         }
-
+        return collided;
        
+
+    }
+    [SerializeField] private float blinkInterval;
+    [SerializeField] private int nummberOfBlinksPerBomb;
+
+    public void Blink()
+    {
+        StartCoroutine(BlinkCoroutine());
+    }
+    private  IEnumerator BlinkCoroutine()
+    {
+        for (int i = 0; i < nummberOfBlinksPerBomb; i++)
+        {
+            graphics.SetActive(false);
+            yield return new WaitForSeconds(blinkInterval);
+            graphics.SetActive(true);
+            yield return new WaitForSeconds(blinkInterval);
+        }
 
     }
 }
