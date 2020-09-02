@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum KernelTypes:byte
+/*public enum KernelTypes:byte
 {
     Good,Bad
-}
+}*/
 
 public enum KernelStates : byte
 {
@@ -14,20 +14,18 @@ public enum KernelStates : byte
 
 public class Kernel : MonoBehaviour
 {
-
-
     private KernelStates state;
 
     //public KernelTypes kernelType;
 
-
     [SerializeField] private Transform graphics;
     private Vector3 rotation;
-    [SerializeField] private float fallSpeed;
+   
+    //[SerializeField] private float fallSpeed;
     //private  bool falling;
     private float yVelocity;
-    [SerializeField] private float bounceForce;
-    [SerializeField] private float gravity;
+    //[SerializeField] private float bounceForce;
+    //[SerializeField] private float gravity;
 
     [SerializeField] private MeshFilter meshFilter;
     [SerializeField] private GameObject highQualityGraphics;
@@ -41,15 +39,14 @@ public class Kernel : MonoBehaviour
     {
         highQualityGraphics.SetActive(!GameManager.Perform);
         lowQualityGraphics.SetActive(GameManager.Perform);
-
     }
-    // Update is called once per frame
 
     void FixedUpdate()
     {
-        if(state!= KernelStates.Collected)
+        if(state != KernelStates.Collected)
         {
-            graphics.Rotate(rotation * Time.deltaTime);
+            float deltaTime = Time.deltaTime;
+            graphics.Rotate(rotation * deltaTime);
             //Debug.Log(" Collider:" + collider.bounds.min.y);
             if (state == KernelStates.Falling)
             {
@@ -57,7 +54,7 @@ public class Kernel : MonoBehaviour
                 (transform.position.y - World.MaxShadowHeight) / (World.MinShadowHeight - World.MaxShadowHeight);//TODO: Optimise
                 transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
 
-                transform.Translate(new Vector3(0, -fallSpeed * Time.deltaTime, 0));
+                transform.Translate(new Vector3(0, -PhysicsManager.CollectablesFallSpeed *deltaTime, 0));
                 if (transform.position.y <= World.CorrectedFloorHeight)
                 {
                     //Debug.Log("bounce- Collider:" + collider.bounds.min.y +"floor:"+ World.FloorHeight);
@@ -66,18 +63,26 @@ public class Kernel : MonoBehaviour
             }
             else
             {
-                yVelocity -= gravity * Time.deltaTime;
-                transform.Translate(new Vector3(0, yVelocity * Time.deltaTime, 0));
+                float newYVelocity = yVelocity - PhysicsManager.CollectablesGravity * deltaTime;
+               // yVelocity -= PhysicsManager.CollectablesGravity * deltaTime;
 
-                if (yVelocity < 0)
+                if (yVelocity >= 0 && newYVelocity<0)
                 {
-                    Die();
+                    Disappear();
+                    //Die();
                 }
+                yVelocity = newYVelocity;
+                transform.Translate(new Vector3(0, yVelocity * deltaTime, 0));
+
             }
         }
-       
-
     }
+
+    private void Disappear()
+    {
+        StartCoroutine(BlinkCoroutine());
+    }
+
     public void SpawnInitialise( Mesh mesh )
     {
         float r = 160f;
@@ -96,12 +101,23 @@ public class Kernel : MonoBehaviour
     private void Bounce()
     {
         state = KernelStates.Bouncing;
-        yVelocity = bounceForce;
+        yVelocity = PhysicsManager.CollectablesBounceForce;
     }
 
     public void Collect()
     {
         state = KernelStates.Collected;
         //Die();
+    }
+    private IEnumerator BlinkCoroutine()
+    {
+        for (int i = 0; i < PhysicsManager.CollectablesNumberOfBlinks; i++)
+        {
+            graphics.gameObject.SetActive(false);
+            yield return new WaitForSeconds(PhysicsManager.CollectablesBlinkInterval);
+            graphics.gameObject.SetActive(true);
+            yield return new WaitForSeconds(PhysicsManager.CollectablesBlinkInterval);
+        }
+        Die();
     }
 }

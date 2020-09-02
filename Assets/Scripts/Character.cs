@@ -43,8 +43,6 @@ public class Character : MonoBehaviour
     /*[SerializeField] private TMPro.TextMeshProUGUI text;
     [SerializeField] private Transform textAnchor;*/
 
-
-
     void Start()
     {
         Initialise();
@@ -137,15 +135,6 @@ public class Character : MonoBehaviour
                 transform.position += movementVector;
 
             }
-
-            //if (GameManager.AllowPushing)
-            {
-              
-
-            }
-
-
-
             // transform.Translate(Vector3.forward * walkingSpeed * Time.deltaTime);
         }
 
@@ -187,9 +176,8 @@ public class Character : MonoBehaviour
             //Debug.DrawRay(transform.position, transform.forward, Color.red, 0.2f);
         }
         return collided;
-       
-
     }
+
     [SerializeField] private float blinkInterval;
     [SerializeField] private int nummberOfBlinksPerBomb;
 

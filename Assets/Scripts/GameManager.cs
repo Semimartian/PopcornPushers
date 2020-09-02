@@ -79,12 +79,32 @@ public class GameManager : MonoBehaviour
                  if (allUIFollowers[j].target == charactersOrderdbyScore[i].uiAnchor)
                  {
                     allUIFollowers[j].target = instance.podiumCharacters[i].transform;
-                    allUIFollowers[j].SetYOffset(220);
+                    allUIFollowers[j].SetYOffset(236);
                 }
             }
             instance.podiumCharacters[i].Prepare( charactersOrderdbyScore[i].Material,i+1);
         }
         Destroy(instance.crown);//.SetActive(false);
-;    }
+
+        instance.StartCoroutine(instance.FireConfettis());
+    }
+
+    [SerializeField] private ParticleSystem[] confettiSystems;
+    [SerializeField] private EndPopcornSpawner endPopcornSpawner;
+
+    private IEnumerator FireConfettis()
+    {
+        yield return new WaitForSeconds(1f);
+        endPopcornSpawner.Play();
+        confettiSystems[0].Play();
+        //yield return new WaitForSeconds(0.2f);
+        confettiSystems[1].Play();
+        yield return new WaitForSeconds(0.2f);
+        confettiSystems[2].Play();
+        yield return new WaitForSeconds(0.2f);
+        confettiSystems[3].Play();
+
+
+    }
 
 }

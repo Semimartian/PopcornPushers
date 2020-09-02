@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class LiveLeaderboard : MonoBehaviour
 {
-    /*private class PlayerRating
-    {
-        public Character character;
-        public int place;
-    }*/
+    
     [SerializeField] Transform[] slots;
-    //[SerializeField] Transform[] slots;
-
-    //private PlayerRating[] playerRatings;
     [SerializeField] private List<ScoreUI> scoreUIs;
     [SerializeField] private float scoreUISpeed = 0.5f;
     public static LiveLeaderboard instance;
@@ -47,7 +40,7 @@ public class LiveLeaderboard : MonoBehaviour
         }
         scoreUIs.Sort((b, a) => (a.character.Bucket.Kernels.CompareTo(b.character.Bucket.Kernels)));
         scoreUIsParent.DetachChildren();
-        for (int i = scoreUIs.Count-1; i >=0 ; i--)
+        for (int i = scoreUIs.Count-1; i >= 0 ; i--)
         {
             scoreUIs[i].UpdateText();
             scoreUIs[i].transform.parent = scoreUIsParent;

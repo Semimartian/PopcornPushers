@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿//using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PopcornParticleSpawner : MonoBehaviour
 {
-    [SerializeField] private float maxInitialKernelDistance;
+    [SerializeField] private float initialKernelDestructionDistance;
+
 
     [SerializeField]  private Collider initialSpawnArea;
     [SerializeField] private Collider topSpawnArea;
@@ -29,12 +31,10 @@ public class PopcornParticleSpawner : MonoBehaviour
 
 
     private GameObject[] initialKernels;
+    [SerializeField] private OneShotSound oneShotSoundPreFab;
 
-    private void Start()
-    {
-    }
-
-   private int stateIndex = 0;
+    private int stateIndex = 0;
+    [SerializeField] private float timeToUnphysicalise = 30f;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -49,7 +49,7 @@ public class PopcornParticleSpawner : MonoBehaviour
                 case 1:
                 {
                         StartCoroutine(PopKernels());
-                        Invoke("UnPhysicaliseInitialKernels", 6f);
+                        Invoke("UnPhysicaliseInitialKernels", timeToUnphysicalise);
                         break;
                 }
                 case 2:
@@ -91,7 +91,9 @@ public class PopcornParticleSpawner : MonoBehaviour
         }
     }
 
-    IEnumerator PopKernels()
+    [SerializeField] private AudioClip[] popSounds;
+
+    private IEnumerator PopKernels()
     {
         for (int i = 0; i < initialKernelsNumber; i++)
         {
@@ -101,24 +103,26 @@ public class PopcornParticleSpawner : MonoBehaviour
             kernel.GetComponent<MeshFilter>().mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
             kernel.GetComponent<BoxCollider>().size = Vector3.one * poppedColliderSize;
             kernel.GetComponent<MeshRenderer>().materials = poppedMaterials;
-
+            OneShotSound sound = Instantiate(oneShotSoundPreFab, kernel.transform.position, Quaternion.identity);
+            sound.Play(popSounds[Random.Range(0, popSounds.Length)], 0.7f, 1.3f);
             yield return new WaitForSeconds(Random.Range(0, maxPopInterval));
 
         }
     }
 
-    void UnPhysicaliseInitialKernels()
+    private void UnPhysicaliseInitialKernels()
     {
         if (initialKernels != null)
         {
             Vector3 position = transform.position;
+            List<Transform> distantKernels = new List<Transform>();
             for (int i = 0; i < initialKernels.Length; i++)
             {
                 if (initialKernels[i] != null)
                 {
-                    if(Vector3.Distance( initialKernels[i].transform.position, position) > maxInitialKernelDistance)
+                    if(Vector3.Distance( initialKernels[i].transform.position, position) > initialKernelDestructionDistance)
                     {
-                        Destroy(initialKernels[i]);
+                        distantKernels.Add(initialKernels[i].transform);
                     }
                     else
                     {
@@ -128,16 +132,24 @@ public class PopcornParticleSpawner : MonoBehaviour
                 }
 
             }
+
+            StartCoroutine(ShrinkAndDestroy(distantKernels.ToArray(), 0.1f, 1f));
+
         }
 
         initialKernels = null;
     }
-    [SerializeField] Transform explosionPoint;
-    [SerializeField] float explosionForce;
-    [SerializeField] float explosionRadius;
-    [SerializeField] float explosionUpwardsModifier;
+    [System.Serializable] struct ExplosionParameters
+    {
+        public Transform point;
+        public float force;
+        public float radius;
+        public float upwardsModifier;
+    }
+    [SerializeField] ExplosionParameters burstExplosion;
+    [SerializeField] ExplosionParameters routineExplosion;
 
-
+    private Transform[] burstKernels;
     IEnumerator SpawnKernelBurst()
     {
         cameraAnimator.SetTrigger("Transition");
@@ -146,7 +158,8 @@ public class PopcornParticleSpawner : MonoBehaviour
         
         yield return null;
         Bounds bounds = topSpawnArea.bounds;
-        Vector3 explosionPosition = explosionPoint.position;
+        Vector3 explosionPosition = burstExplosion.point.position;
+        burstKernels = new Transform[burstNumber];
         for (int i = 0; i < burstNumber; i++)
         {
            // yield return new WaitForSeconds(Random.Range(0, maxPopInterval));
@@ -158,10 +171,39 @@ public class PopcornParticleSpawner : MonoBehaviour
             kernel.GetComponent<MeshFilter>().mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
 
             Rigidbody rigidbody = kernel.GetComponent<Rigidbody>();
-            rigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRadius, explosionUpwardsModifier);
-            Destroy(kernel, 2f);
+            rigidbody.AddExplosionForce
+                (burstExplosion.force, explosionPosition, burstExplosion.radius, burstExplosion.upwardsModifier);
+
+            burstKernels[i] = kernel.transform;
         }
+        StartCoroutine(ShrinkAndDestroy(burstKernels,1.6f,1.6f));
     }
+
+    IEnumerator ShrinkAndDestroy(Transform[] transforms, float startIn, float timeToShrink)
+    {
+        //Debug.Log("transforms.length" + transforms.Length);
+        yield return new WaitForSeconds(startIn);
+
+        float time = 0;
+        Vector3 reducer = (transforms[0].localScale / timeToShrink);
+        while (time< timeToShrink)
+        {
+            Vector3 newScale = (transforms[0].localScale - ((reducer * Time.deltaTime) ));
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                transforms[i].localScale = newScale;
+            }
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        for (int i = 0; i < transforms.Length; i++)
+        {
+            Destroy(transforms[i].gameObject);
+        }
+
+    }
+
     [SerializeField] private float maxRoutineInterval=1f;
 
     IEnumerator SpawnRoutine()
@@ -170,7 +212,7 @@ public class PopcornParticleSpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.Range(0, maxRoutineInterval));
             Bounds bounds = topSpawnArea.bounds;
-            Vector3 explosionPosition = explosionPoint.position;
+            Vector3 explosionPosition = routineExplosion.point.position;
             Vector3 position = new Vector3
                 (Random.Range(bounds.min.x, bounds.max.x),
                  Random.Range(bounds.min.y, bounds.max.y),
@@ -178,7 +220,8 @@ public class PopcornParticleSpawner : MonoBehaviour
             GameObject kernel = Instantiate(kernelPreFab, position, Quaternion.identity);
             kernel.GetComponent<MeshFilter>().mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
             Rigidbody rigidbody = kernel.GetComponent<Rigidbody>();
-            rigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRadius, explosionUpwardsModifier);
+            rigidbody.AddExplosionForce
+                (routineExplosion.force, explosionPosition, routineExplosion.radius, routineExplosion.upwardsModifier);
             Destroy(kernel, 2f);
             
         }

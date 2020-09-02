@@ -61,7 +61,7 @@ public class PopcornSpawner : MonoBehaviour
 
     void Update()
     {
-        if(GameManager.GameState != GameManager.GameStates.Intro)
+        if(GameManager.GameState == GameManager.GameStates.InGame)
         {
             if (Time.time >= nextSpawn && spawnPopcorn)
             {
@@ -78,7 +78,7 @@ public class PopcornSpawner : MonoBehaviour
                 maxSpawnInterval = minMaxSpawnInteval;
             }
         }
-        
+       
     }
 
     private void SpawnKernel()

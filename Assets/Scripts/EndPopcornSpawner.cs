@@ -10,18 +10,17 @@ public class EndPopcornSpawner : MonoBehaviour
     [SerializeField] private float maxRoutineInterval = 1f;
     [SerializeField] private Mesh[] kernelMeshes;
 
-    private void Start()
+    public void Play( )
     {
-
         StartCoroutine(SpawnRoutine());
     }
-
-    IEnumerator SpawnRoutine()
+   private IEnumerator SpawnRoutine()
     {
-        while (true || GameManager.GameState == GameManager.GameStates.Podium)
+        Bounds bounds = spawnArea.bounds;
+
+        while (true)
         {
             yield return new WaitForSeconds(Random.Range(0, maxRoutineInterval));
-            Bounds bounds = spawnArea.bounds;
             //Vector3 explosionPosition = explosionPoint.position;
             Vector3 position = new Vector3
                 (Random.Range(bounds.min.x, bounds.max.x),
@@ -31,9 +30,7 @@ public class EndPopcornSpawner : MonoBehaviour
                 (Random.Range(-360, 360), Random.Range(-360, 360), Random.Range(-360, 360));
             GameObject kernel = Instantiate(kernelPreFab, position, angle);
             kernel.GetComponent<MeshFilter>().mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
-            Rigidbody rigidbody = kernel.GetComponent<Rigidbody>();
-            //rigidbody.AddExplosionForce(explosionForce, explosionPosition, explosionRadius, explosionUpwardsModifier);
-            Destroy(kernel, 2f);
+           // Destroy(kernel, 4f);
 
         }
     }

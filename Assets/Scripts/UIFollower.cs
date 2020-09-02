@@ -13,6 +13,7 @@ public class UIFollower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Camera.main.WorldToScreenPoint(target.position) + Vector3.up* yOffset;
+        transform.position = 
+            Camera.main.WorldToScreenPoint(target.position) + Vector3.up * yOffset;
     }
 }

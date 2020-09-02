@@ -8,10 +8,7 @@ public class Bomb : MonoBehaviour
 
     [SerializeField] private Transform graphics;
     private Vector3 rotation;
-    [SerializeField] private float fallSpeed;
     private float yVelocity;
-    [SerializeField] private float bounceForce;
-    [SerializeField] private float gravity;
     [SerializeField] private GameObject highQualityGraphics;
     [SerializeField] private GameObject lowQualityGraphics;
 
@@ -35,7 +32,7 @@ public class Bomb : MonoBehaviour
                 (transform.position.y - World.MaxShadowHeight) / (World.MinShadowHeight - World.MaxShadowHeight);//TODO: Optimise
                 transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
 
-                transform.Translate(new Vector3(0, -fallSpeed * Time.deltaTime, 0));
+                transform.Translate(new Vector3(0, -PhysicsManager.CollectablesFallSpeed * Time.deltaTime, 0));
                 if (transform.position.y  <= World.CorrectedFloorHeight)
                 {
                     //Debug.Log("bounce- Collider:" + collider.bounds.min.y +"floor:"+ World.FloorHeight);
@@ -44,7 +41,7 @@ public class Bomb : MonoBehaviour
             }
             else
             {
-                yVelocity -= gravity * Time.deltaTime;
+                yVelocity -= PhysicsManager.CollectablesGravity * Time.deltaTime;
                 transform.Translate(new Vector3(0, yVelocity * Time.deltaTime, 0));
 
                 if (yVelocity < 0)
@@ -72,7 +69,7 @@ public class Bomb : MonoBehaviour
     private void Bounce()
     {
         state = KernelStates.Bouncing;
-        yVelocity = bounceForce;
+        yVelocity = PhysicsManager.CollectablesBounceForce;
     }
 
     public void Collect()
