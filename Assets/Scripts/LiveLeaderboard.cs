@@ -71,9 +71,7 @@ public class LiveLeaderboard : MonoBehaviour
             {
                // GameManager.Win();
             }
-        }
-
-        
+        }     
     }
 
 

@@ -28,6 +28,8 @@ public class Kernel : MonoBehaviour
     //[SerializeField] private float gravity;
 
     [SerializeField] private MeshFilter meshFilter;
+    [SerializeField] private MeshRenderer renderer;
+
     [SerializeField] private GameObject highQualityGraphics;
     [SerializeField] private GameObject lowQualityGraphics;
 
@@ -83,8 +85,9 @@ public class Kernel : MonoBehaviour
         StartCoroutine(BlinkCoroutine());
     }
 
-    public void SpawnInitialise( Mesh mesh )
+    public void SpawnInitialise( Mesh mesh,Material[] materials )
     {
+        //Debug.Log("material"+ material.ToString());
         float r = 160f;
         rotation = new Vector3
             (Random.Range(-r, r), Random.Range(-r, r), Random.Range(-r, r));
@@ -92,6 +95,7 @@ public class Kernel : MonoBehaviour
         state = KernelStates.Falling;
         //kernelType = type;
         meshFilter.mesh = mesh;
+        renderer.materials = materials;
     }
     public void Die()
     {

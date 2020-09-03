@@ -251,10 +251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphics: {fileID: 2621245048860292490}
-  fallSpeed: 5
-  bounceForce: 8
-  gravity: 6
   meshFilter: {fileID: 3741710790873640279}
+  renderer: {fileID: 6351997019178015033}
   highQualityGraphics: {fileID: 4168439286312944711}
   lowQualityGraphics: {fileID: 4032314049451588920}
 --- !u!65 &9147381499943254750

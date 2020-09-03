@@ -8,6 +8,7 @@ public class Bucket : MonoBehaviour
     private int kernels = 0;
     [SerializeField] private Transform[] kernelSlots;
     [SerializeField] private Character character;
+    [SerializeField] private ParticleSystem particleSystem;
 
     public int Kernels
     {
@@ -27,6 +28,9 @@ public class Bucket : MonoBehaviour
     {
 
         kernel.Collect();
+        particleSystem.Play();
+        SoundManager.PlayOneShotSoundAt(SoundNames.PopCollect, transform.position);
+
         for (int i = 0; i < kernelSlots.Length; i++)
         {
             if(kernelSlots[i].childCount == 0)
@@ -54,6 +58,7 @@ public class Bucket : MonoBehaviour
     private void CollectBomb(Bomb bomb)
     {
         character.Blink();
+        SoundManager.PlayOneShotSoundAt(SoundNames.Oof, transform.position,0.1f);
         bomb.Collect();
         for (int i = kernelSlots.Length-1; i >= 0; i--)
         {

@@ -19,7 +19,8 @@ public class PopcornSpawner : MonoBehaviour
     [SerializeField] private Explosion explosionPreFab;
     private static List<Explosion> explosionPool;
     //[SerializeField] private Mesh[] badKernelMeshes;
-
+    [SerializeField] Material[] kernelWhiteMats;
+    [SerializeField] Material[] kernelGoldMats;
 
     void Start()
     {
@@ -80,7 +81,7 @@ public class PopcornSpawner : MonoBehaviour
         }
        
     }
-
+    [SerializeField] private int bombFrequency = 8;
     private void SpawnKernel()
     {
         Vector3 spawnPosition ;
@@ -88,7 +89,7 @@ public class PopcornSpawner : MonoBehaviour
         spawnPosition.x = Random.Range(range.min.x, range.max.x);
         spawnPosition.z = Random.Range(range.min.z, range.max.z);
 
-        bool spawnBomb = Random.Range(0, 100) > 90;
+        bool spawnBomb = Random.Range(0, bombFrequency) == 0;
         //TODO: repeatin code
         if (spawnBomb)
         {
@@ -105,7 +106,10 @@ public class PopcornSpawner : MonoBehaviour
             kernel.gameObject.SetActive(true);
             kernel.transform.position = spawnPosition;
             Mesh mesh = goodKernelMeshes[Random.Range(0, goodKernelMeshes.Length)];
-            kernel.SpawnInitialise(mesh);
+
+            bool isGold = false;// Random.Range(0, 9) == 0;
+            Material[] materials = isGold ? kernelGoldMats : kernelWhiteMats;
+            kernel.SpawnInitialise(mesh, materials);
 
         }
     }

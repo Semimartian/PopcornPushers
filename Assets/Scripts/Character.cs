@@ -32,7 +32,7 @@ public class Character : MonoBehaviour
     [SerializeField] private Bucket bucket;
 
     private Vector3 externalForces;
-    private float externalForcesReductionPerSecond=8f;
+    private float externalForcesReductionPerSecond=16f;
     public Bucket Bucket
     {
         get { return bucket; }
@@ -63,7 +63,7 @@ public class Character : MonoBehaviour
 
             externalForces = Vector3.ClampMagnitude
                 (externalForces, externalForcesMagnitude - (externalForcesReductionPerSecond * Time.deltaTime));
-            if(externalForces.magnitude < 0.12f)
+            if(externalForces.magnitude < 0.1f)
             {
                 externalForces = Vector3.zero;
             }
@@ -141,18 +141,18 @@ public class Character : MonoBehaviour
         animator.SetBool("Walking", walking);
     }
 
-
+    [SerializeField] Transform[] pushOrigins;
     private bool TryPush()
     {
         float height = collider.bounds.max.y- collider.bounds.min.y;
         bool collided = false;
-        for (float i = 0; i < 1.1f; i+=0.25f)
+        for (int i = 0; i < pushOrigins.Length; i++)
         {
 
             RaycastHit collisionDetector;
 
             // Debug.Log("transform.forward" + transform.forward);
-            if (Physics.Raycast(transform.position + Vector3.up*(height*i), transform.forward, out collisionDetector, 1.5f))
+            if (Physics.Raycast(pushOrigins[i].position , transform.forward, out collisionDetector, 1f))
             {
                 Character otherCharacter = (collisionDetector.collider.gameObject.GetComponent<Character>());
                 if (otherCharacter != null )
@@ -160,8 +160,9 @@ public class Character : MonoBehaviour
                     //otherCharacter.rigidbody.AddExplosionForce(3f,transform.position,2f);
                     if (otherCharacter.externalForces == Vector3.zero && GameManager.AllowPushing)
                     {
-                        Vector3 force = transform.forward * 10;
-                        force.y = 5;
+                        SoundManager.PlayOneShotSoundAt(SoundNames.Oof, otherCharacter.transform.position);
+                        Vector3 force = transform.forward * 9.5f;
+                        force.y = 9;
                         otherCharacter.externalForces = force;
                         Debug.Log("hit");
                     }

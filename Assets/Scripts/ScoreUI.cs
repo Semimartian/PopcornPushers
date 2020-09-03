@@ -16,8 +16,11 @@ public class ScoreUI : MonoBehaviour
     }
     public void UpdateText()
     {
-       // text.transform.position = Camera.main.WorldToScreenPoint(textAnchor.position);
-        text.text = character.Bucket.Kernels.ToString();
+        // text.transform.position = Camera.main.WorldToScreenPoint(textAnchor.position);
+        int score = character.Bucket.Kernels;
+        text.text = score.ToString();
+        image.sprite = SpriteHolder.GetScoreUISprite(score);
+
     }
     // Update is called once per frame
     void Update()

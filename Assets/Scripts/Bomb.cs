@@ -75,6 +75,7 @@ public class Bomb : MonoBehaviour
     public void Collect()
     {
         PopcornSpawner.SpawnExplosion(transform.position);
+        SoundManager.PlayOneShotSoundAt(SoundNames.Explosion, transform.position);
         Die();
     }
 }

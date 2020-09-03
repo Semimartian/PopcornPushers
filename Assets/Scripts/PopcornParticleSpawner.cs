@@ -35,6 +35,7 @@ public class PopcornParticleSpawner : MonoBehaviour
 
     private int stateIndex = 0;
     [SerializeField] private float timeToUnphysicalise = 30f;
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -103,8 +104,14 @@ public class PopcornParticleSpawner : MonoBehaviour
             kernel.GetComponent<MeshFilter>().mesh = kernelMeshes[Random.Range(0, kernelMeshes.Length)];
             kernel.GetComponent<BoxCollider>().size = Vector3.one * poppedColliderSize;
             kernel.GetComponent<MeshRenderer>().materials = poppedMaterials;
-            OneShotSound sound = Instantiate(oneShotSoundPreFab, kernel.transform.position, Quaternion.identity);
-            sound.Play(popSounds[Random.Range(0, popSounds.Length)], 0.7f, 1.3f);
+
+            bool playSound = Random.Range(0, 2) == 0;
+            if (playSound)
+            {
+                SoundManager.PlayOneShotSoundAt(SoundNames.Pop, kernel.transform.position);
+
+            }
+
             yield return new WaitForSeconds(Random.Range(0, maxPopInterval));
 
         }
