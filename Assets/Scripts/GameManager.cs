@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public static GameManager instance;
+    public const bool SHORT_GAME = true;
     private static GameStates DT_gameState;
     public static GameStates GameState
     {
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] GameObject crown;
-    private static void Win()
+    public static void Win()
     {
         GameState = GameStates.Podium;
 
@@ -80,13 +81,16 @@ public class GameManager : MonoBehaviour
                  {
                     allUIFollowers[j].target = instance.podiumCharacters[i].transform;
                     allUIFollowers[j].SetYOffset(236);
-                }
+                 }
             }
             instance.podiumCharacters[i].Prepare( charactersOrderdbyScore[i].Material,i+1);
         }
         Destroy(instance.crown);//.SetActive(false);
+        if(charactersOrderdbyScore[0].mainCharacter )
+        {
+            instance.StartCoroutine(instance.FireConfettis());
 
-        instance.StartCoroutine(instance.FireConfettis());
+        }
     }
 
     [SerializeField] private ParticleSystem[] confettiSystems;

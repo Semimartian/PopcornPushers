@@ -26,7 +26,11 @@ public class Bucket : MonoBehaviour
     }
     private void CollectKernel(Kernel kernel)
     {
-
+        if(kernels >= LiveLeaderboard.KernelsToWin)
+        {
+            Debug.LogWarning("Kernel number's bigger or equal to hmmm kernelsToWin so no");
+            return;
+        }
         kernel.Collect();
         particleSystem.Play();
         SoundManager.PlayOneShotSoundAt(SoundNames.PopCollect, transform.position);
@@ -83,19 +87,23 @@ public class Bucket : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Kernel kernel = other.GetComponent<Kernel>();
-        if(kernel!=null && kernel.IsCollectable)
+        if (GameManager.GameState == GameManager.GameStates.InGame)
         {
-            CollectKernel(kernel);
-        }
-        else
-        {
-            Bomb bomb = other.GetComponent<Bomb>();
-            if (bomb != null)
+            Kernel kernel = other.GetComponent<Kernel>();
+            if (kernel != null && kernel.IsCollectable)
             {
-                CollectBomb(bomb);
+                CollectKernel(kernel);
+            }
+            else
+            {
+                Bomb bomb = other.GetComponent<Bomb>();
+                if (bomb != null)
+                {
+                    CollectBomb(bomb);
+                }
             }
         }
+        
 
     }
 

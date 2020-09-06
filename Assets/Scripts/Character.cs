@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public bool mainCharacter = false;
     [SerializeField] private KeyCode upKey;
     [SerializeField] private KeyCode downKey;
     [SerializeField] private KeyCode rightKey;
@@ -160,7 +161,7 @@ public class Character : MonoBehaviour
                     //otherCharacter.rigidbody.AddExplosionForce(3f,transform.position,2f);
                     if (otherCharacter.externalForces == Vector3.zero && GameManager.AllowPushing)
                     {
-                        SoundManager.PlayOneShotSoundAt(SoundNames.Oof, otherCharacter.transform.position);
+                        SoundManager.PlayOneShotSoundAt(SoundNames.Push, otherCharacter.transform.position);
                         Vector3 force = transform.forward * 9.5f;
                         force.y = 9;
                         otherCharacter.externalForces = force;

@@ -183,6 +183,9 @@ public class PopcornParticleSpawner : MonoBehaviour
 
             burstKernels[i] = kernel.transform;
         }
+
+        SoundManager.PlayOneShotSoundAt(SoundNames.PopcorenBurst, explosionPosition);
+
         StartCoroutine(ShrinkAndDestroy(burstKernels,1.6f,1.6f));
     }
 

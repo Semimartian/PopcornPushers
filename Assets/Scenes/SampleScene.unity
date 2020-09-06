@@ -349,8 +349,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 52680377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.9, z: -11.24}
-  m_LocalScale: {x: 34.740944, y: 30.078102, z: 1.5593}
+  m_LocalPosition: {x: 0, y: 18, z: -11.24}
+  m_LocalScale: {x: 44.220173, y: 59.674084, z: 1.5593}
   m_Children: []
   m_Father: {fileID: 7812134528202662951}
   m_RootOrder: 8
@@ -11333,8 +11333,8 @@ MonoBehaviour:
     audioClips:
     - clip: {fileID: 8300000, guid: bc1b0721ed3ac4f478d55a4e8117baaa, type: 3}
       volume: 0.883
-    minPitch: 0.95
-    maxPitch: 1.05
+    minPitch: 0.93
+    maxPitch: 1.03
   - name: 3
     audioClips:
     - clip: {fileID: 8300000, guid: d033a67cfc3b85d4fbe052258479957e, type: 3}
@@ -11353,6 +11353,18 @@ MonoBehaviour:
       volume: 1
     minPitch: 1.05
     maxPitch: 0.95
+  - name: 4
+    audioClips:
+    - clip: {fileID: 8300000, guid: 5f80c8bd16be77c41bcb7a9c0182dbcc, type: 3}
+      volume: 1
+    minPitch: 1.22
+    maxPitch: 1.3
+  - name: 5
+    audioClips:
+    - clip: {fileID: 8300000, guid: 8a3b3312313f7a245ab55ba82b40cf18, type: 3}
+      volume: 0.828
+    minPitch: 1
+    maxPitch: 1
   oneShotSoundPreFab: {fileID: 1725612630252328183, guid: 7862d86aa285ea44bb2064dcd78846da,
     type: 3}
 --- !u!1 &1092642519
@@ -11483,7 +11495,7 @@ MonoBehaviour:
   scoreUISpeed: 260
   scoreUIsParent: {fileID: 1092792208}
   Crown: {fileID: 778825151}
-  kernelsToWin: 10
+  kernelsToWin: 5
 --- !u!1 &1115377952
 GameObject:
   m_ObjectHideFlags: 0
@@ -15762,7 +15774,7 @@ PrefabInstance:
     - target: {fileID: 8821668999917534265, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534265, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
@@ -17143,7 +17155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913b3c53e882d67408e4c3fa59b63390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScoreUISprites:
+  scoreUISprites:
   - {fileID: 21300000, guid: dd15b9412ba94284b9315fbe07dbbbb1, type: 3}
   - {fileID: 21300000, guid: 9f2671899e83be84bbf0a7102a2ff14f, type: 3}
   - {fileID: 21300000, guid: 7ec6aadb798157b4997a7f0015e24bc7, type: 3}
@@ -17155,6 +17167,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 28f0983477f8b2241b7f1c804fc9060a, type: 3}
   - {fileID: 21300000, guid: 273756c58d2ba0242a64f30e6aa9bd6f, type: 3}
   - {fileID: 21300000, guid: 6a17508cc71d4664cb7ef2c9f401df5a, type: 3}
+  shortScoreUISprites:
+  - {fileID: 21300000, guid: 84656e79f5ed3944db1e48bcf7b8996b, type: 3}
+  - {fileID: 21300000, guid: dc5e77306cb59e444978e54637aff7d1, type: 3}
+  - {fileID: 21300000, guid: 2ff5646243c6fb447ac42baae74a111a, type: 3}
+  - {fileID: 21300000, guid: 95ef89b1a43cb6143808ed75bd3d43b1, type: 3}
+  - {fileID: 21300000, guid: 90370006af09638418096406efeee6ea, type: 3}
+  - {fileID: 21300000, guid: 0c686308b642be54fa469c85f567b622, type: 3}
 --- !u!4 &1909262457
 Transform:
   m_ObjectHideFlags: 0
@@ -19195,7 +19214,7 @@ PrefabInstance:
     - target: {fileID: 8821668999917534265, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8821668999917534265, guid: aa6d2a57a2bbea444bba756724c0def3,
         type: 3}
@@ -19307,6 +19326,11 @@ PrefabInstance:
       propertyPath: bucket
       value: 
       objectReference: {fileID: 895097153}
+    - target: {fileID: 8821668999917534269, guid: aa6d2a57a2bbea444bba756724c0def3,
+        type: 3}
+      propertyPath: mainCharacter
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa6d2a57a2bbea444bba756724c0def3, type: 3}
 --- !u!1 &2107731169
@@ -31469,7 +31493,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7812134528466360726}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.17, z: 0}
+  m_LocalPosition: {x: 0, y: 4.75, z: 0}
   m_LocalScale: {x: 5.1, y: 2.5728, z: 4.090202}
   m_Children: []
   m_Father: {fileID: 7812134528202662951}
@@ -31688,8 +31712,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 349432de022efe54488a5eb75b1a1e15, type: 2}
   - {fileID: 2100000, guid: ac3157346e71b5b4bb7a8aff4cb91a44, type: 2}
   initialKernelsNumber: 126
-  burstNumber: 42
-  maxPopInterval: 0.012
+  burstNumber: 64
+  maxPopInterval: 0.008
   kernelMeshes:
   - {fileID: 8155946519446003867, guid: 0b458d2db893265409ed3cc68cd29168, type: 3}
   - {fileID: 4982286811626009481, guid: 0b458d2db893265409ed3cc68cd29168, type: 3}

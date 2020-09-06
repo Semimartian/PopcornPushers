@@ -12,7 +12,10 @@ public class LiveLeaderboard : MonoBehaviour
     [SerializeField] private Transform scoreUIsParent;
     [SerializeField] private UIFollower Crown;
     [SerializeField] private int kernelsToWin;
-
+    public static int KernelsToWin
+    {
+        get { return instance.kernelsToWin; }
+    }
     public static Character[] GetCharactersOrderedScore()
     {
         Character[] charactersOrderedByScore = new Character[instance.scoreUIs.Count];
@@ -69,9 +72,15 @@ public class LiveLeaderboard : MonoBehaviour
             Crown.target = winner.uiAnchor;
             if(winner.Bucket.Kernels>= kernelsToWin)
             {
-               // GameManager.Win();
+                Invoke("Win", 0.599f);//  GameManager.Win();
             }
         }     
+    }
+
+    private void Win()
+    {
+        GameManager.Win();
+
     }
 
 

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 public enum SoundNames:byte
 {
-    Explosion, PopCollect, Oof, Pop
+    Explosion, PopCollect, Oof, Pop, Push, PopcorenBurst
 }
 [Serializable]
 public class CorrectedSoundClip

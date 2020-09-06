@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SpriteHolder : MonoBehaviour
 {
-   [SerializeField] private Sprite[] ScoreUISprites;
+    [SerializeField] private Sprite[] scoreUISprites;
+    [SerializeField] private Sprite[] shortScoreUISprites;
+
     private static SpriteHolder instance;
     private void Awake()
     {
@@ -13,7 +15,9 @@ public class SpriteHolder : MonoBehaviour
 
     public static Sprite GetScoreUISprite(int index)
     {
-        index= Mathf.Clamp(index, 0, instance.ScoreUISprites.Length - 1);
-        return instance.ScoreUISprites[index];
+        Sprite[] sprites = GameManager.SHORT_GAME ? instance.shortScoreUISprites : instance.scoreUISprites;
+
+        index = Mathf.Clamp(index, 0, sprites.Length - 1);
+        return sprites[index];
     }
 }

@@ -54,7 +54,7 @@ public class Kernel : MonoBehaviour
             {
                 float t =
                 (transform.position.y - World.MaxShadowHeight) / (World.MinShadowHeight - World.MaxShadowHeight);//TODO: Optimise
-                transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
+                transform.localScale = Vector3.Lerp(PhysicsManager.MaxKernelSize, Vector3.zero, t);
 
                 transform.Translate(new Vector3(0, -PhysicsManager.CollectablesFallSpeed *deltaTime, 0));
                 if (transform.position.y <= World.CorrectedFloorHeight)
